@@ -1,18 +1,20 @@
 """
 This module contains helper functions for anonymizing data and generating random data
-before sending it to the LLM (An External API). Only df.head() is sent to LLM API,
- hence the df.head() is processed to remove any personal or sensitive information.
+ before sending it to the LLM (An External API).
+
+Only df.head() is sent to LLM API, hence the df.head() is processed
+ to remove any personal or sensitive information.
 
 """
 
 import random
 import re
 import string
+
 import pandas as pd
 
 
 def is_valid_email(email: str) -> bool:
-
     """Check if the given email is valid based on regex pattern.
 
     Args:
@@ -26,7 +28,6 @@ def is_valid_email(email: str) -> bool:
 
 
 def is_valid_phone_number(phone_number: str) -> bool:
-
     """Check if the given phone number is valid based on regex pattern.
 
     Args:
@@ -40,7 +41,6 @@ def is_valid_phone_number(phone_number: str) -> bool:
 
 
 def is_valid_credit_card(credit_card_number: str) -> bool:
-
     """Check if the given credit card number is valid based on regex pattern.
 
     Args:
@@ -54,7 +54,6 @@ def is_valid_credit_card(credit_card_number: str) -> bool:
 
 
 def generate_random_email() -> str:
-
     """Generates a random email address using predefined domains.
 
     Returns (str): generated random email address.
@@ -79,7 +78,6 @@ def generate_random_email() -> str:
 
 
 def generate_random_phone_number(original_field: str) -> str:
-
     """Generate a random phone number with country code if originally present.
 
     Args:
@@ -105,7 +103,6 @@ def generate_random_phone_number(original_field: str) -> str:
 
 
 def generate_random_credit_card() -> str:
-
     """Generate a random credit card number.
 
     Returns (str): generated random credit card number.
@@ -120,7 +117,6 @@ def generate_random_credit_card() -> str:
 
 
 def copy_head(data_frame: pd.DataFrame) -> pd.DataFrame:
-
     """Copy the head of a DataFrame.
 
     Args:
@@ -135,7 +131,6 @@ def copy_head(data_frame: pd.DataFrame) -> pd.DataFrame:
 def anonymize_dataframe_head(
     data_frame: pd.DataFrame, force_conversion: bool = True
 ) -> pd.DataFrame:
-
     """Anonymize the head of a given DataFrame by replacing sensitive data.
 
     Args:
@@ -176,7 +171,9 @@ def anonymize_dataframe_head(
             )
             random_value = data_frame.iloc[random_row_index, col_idx]
             data_frame.iloc[row_idx, col_idx] = random_value
-            data_frame.iloc[random_row_index, col_idx] = cell_value
+            data_frame.iloc[random_row_index, col_idx] = (
+                pd.eval(cell_value) if cell_value in ["True", "False"] else cell_value
+            )
     # restore the original data types
     data_frame = data_frame.astype(dtypes)
     return data_frame

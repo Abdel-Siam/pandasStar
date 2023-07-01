@@ -1,0 +1,27 @@
+python-dotenv
+pandas
+astor
+openai
+ipython
+matplotlib
+google-generativeai; extra == "google"
+google-cloud-aiplatform; extra == "google-cloud"
+langchain; extra == "langchain"
+black; extra == "dev"
+pre-commit; extra == "dev"
+ruff; extra == "dev"
+pytest; extra == "dev"
+pytest-mock; extra == "dev"
+pytest-env; extra == "dev"
+click; extra == "dev"
+statsmodels; extra == "whitelist"
+scikit-learn; extra == "whitelist"
+seaborn; extra == "whitelist"
+plotly; extra == "whitelist"
+ggplot; extra == "whitelist"
+numpy; extra == "whitelist"
+scipy; extra == "whitelist"
+streamlit; extra == "whitelist"
+mkdocs; extra == "docs"
+mkdocstrings-python; extra == "docs"
+markdown-include; extra == "docs"

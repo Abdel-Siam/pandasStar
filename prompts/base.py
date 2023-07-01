@@ -2,19 +2,16 @@
 In order to better handle the instructions, this prompt module is written.
 """
 
-from ..exceptions import MethodNotImplementedError
+from pandasai.exceptions import MethodNotImplementedError
 
 
 class Prompt:
     """Base class to implement a new Prompt"""
 
-    # pylint: disable=too-few-public-methods
-
     text = None
     _args = {}
 
-    def __init__(self, **kwargs): # pylint: disable=super-init-not-called
-
+    def __init__(self, **kwargs):
         """
         __init__ method of Base class of Prompt Module
         Args:
