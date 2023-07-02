@@ -48,7 +48,6 @@ def compare_ast(
 
     return node1 == node2
 
-
 def add_save_chart(
     code: str,
     folder_name: str,
@@ -82,8 +81,9 @@ def add_save_chart(
 
     # count number of plt.show() calls
     show_count = sum(
-        compare_ast(node, ast.parse("plt.show()").body[0], ignore_args=True)
+        isinstance(node.value.func, ast.Attribute) and node.value.func.attr == "show"
         for node in ast.walk(tree)
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call)
     )
 
     # if there are no plt.show() calls, return the original code
@@ -97,7 +97,12 @@ def add_save_chart(
     counter = ord("a")
     new_body = []
     for node in tree.body:
-        if compare_ast(node, ast.parse("plt.show()").body[0], ignore_args=True):
+        if (
+            isinstance(node, ast.Expr)
+            and isinstance(node.value, ast.Call)
+            and isinstance(node.value.func, ast.Attribute)
+            and node.value.func.attr == "show"
+        ):
             filename = "chart"
             if show_count > 1:
                 filename += f"_{chr(counter)}"
